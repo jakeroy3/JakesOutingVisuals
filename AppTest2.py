@@ -1,5 +1,5 @@
 import streamlit as st
-import matplotlib as mpl
+import matplotlib
 import matplotlib.gridspec as gridspec
 import matplotlib.pyplot as plt
 import pandas as pd

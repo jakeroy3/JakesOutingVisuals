@@ -100,6 +100,9 @@ def pitch_scatters(card_player, selected_date):
 
     sns.scatterplot(data=amovement, ax=ax, x='horizontal_movement', y='vertical_movement',
                     hue='pitchtype', legend=True, s=150, palette=pitch_palette, marker='*')
+  
+    ax.set_title('Pitch Movements')
+    ax1.set_title('Locations - '+selected_date)
     ax.legend(title='Season AVG Pitch Movement')
     sns.move_legend(ax, "lower center", bbox_to_anchor=(0.5, -.5), ncol=len(amovement), fontsize=10)
     sns.despine(fig)

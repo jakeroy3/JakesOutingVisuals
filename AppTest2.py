@@ -42,9 +42,10 @@ y_bot = -0.5
 y_lim = 6
 plate_y = -.25
 
-pitch_palette = {'FF': 'C3', 'FS': 'C1', 'KC': 'C2', 'FC': 'C0',
-                 'ST': 'C4', 'SL': 'C5', 'CH': 'C6', 'SI': 'C7',
-                 'CU': 'C8', 'PO': 'C9'}
+pitch_palette = {'FF': 'C3', 'FS': 'C5', 'KC': 'C2', 'FC': 'C0',
+                 'ST': 'C4', 'SL': 'C1', 'CH': 'C6', 'SI': 'C10',
+                 'CU': 'C8', 'PO': 'C9', 'KN': 'C7'}
+
 def pitch_scatters(card_player, selected_date):
     sns.set_theme(style='darkgrid')
     pitches_scatter = pitch_df.loc[(pitch_df['name'] == card_player) & (pitch_df['game_date'] == selected_date)]

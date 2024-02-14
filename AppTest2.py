@@ -50,7 +50,7 @@ y_lim = 6
 plate_y = -.25
 
 pitch_palette = {'FF': 'C3', 'FS': 'C5', 'KC': 'C2', 'FC': 'C0',
-                 'ST': 'C4', 'SL': 'C1', 'CH': 'C6', 'SI': 'C10',
+                 'ST': 'C4', 'SL': 'C1', 'CH': 'C6', 'SI': 'C9',
                  'CU': 'C8', 'PO': 'C9', 'KN': 'C7'}
 def pitch_scatters(card_player, selected_date):
     sns.set_theme(style='darkgrid')

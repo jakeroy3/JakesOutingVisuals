@@ -6,7 +6,14 @@ import pandas as pd
 import seaborn as sns
 
 st.title("Jake's Outing Visualizer")
-pitch_df = pd.read_parquet('AppDataPitches.parquet')
+
+col1, col2, col3 = st.columns(3)
+
+with col3:
+    years = list(('2023', '2022'))
+    selected_year = st.selectbox('Choose a Year:', years)
+
+pitch_df = pd.read_parquet('AppDataPitches'+selected_year+'.parquet')
 pitch_df['velo'] = round(pitch_df['velo'], 0)
 
 pitch_list = list(pitch_df['pitchtype'].value_counts().index)
@@ -16,7 +23,8 @@ marker_colors = dict(zip(pitch_list,
 pitcher_list = list(pitch_df.groupby(['name', 'pitchtype'])['pitch_id'].count().reset_index().query('pitch_id >=20')[
                         'name'].sort_values().unique())
 
-col1, col2 = st.columns(2)
+
+# col1, col2, col3 = st.columns(3)
 with col1:
     # Player
     card_player = st.selectbox('Choose a pitcher:', pitcher_list)
@@ -45,7 +53,6 @@ plate_y = -.25
 pitch_palette = {'FF': 'C3', 'FS': 'C5', 'KC': 'C2', 'FC': 'C0',
                  'ST': 'C4', 'SL': 'C1', 'CH': 'C6', 'SI': 'C10',
                  'CU': 'C8', 'PO': 'C9', 'KN': 'C7'}
-
 def pitch_scatters(card_player, selected_date):
     sns.set_theme(style='darkgrid')
     pitches_scatter = pitch_df.loc[(pitch_df['name'] == card_player) & (pitch_df['game_date'] == selected_date)]
@@ -101,7 +108,7 @@ def pitch_scatters(card_player, selected_date):
 
     sns.scatterplot(data=amovement, ax=ax, x='horizontal_movement', y='vertical_movement',
                     hue='pitchtype', legend=True, s=150, palette=pitch_palette, marker='*')
-  
+
     ax.set_title('Pitch Movements')
     ax1.set_title('Locations - '+selected_date)
     ax.legend(title='Season AVG Pitch Movement')

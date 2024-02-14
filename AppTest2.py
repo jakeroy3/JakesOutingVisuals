@@ -14,7 +14,6 @@ with col3:
     selected_year = st.selectbox('Choose a Year:', years)
 
 pitch_df = pd.read_parquet('AppDataPitches'+selected_year+'.parquet')
-pitch_df['velo'] = round(pitch_df['velo'], 0)
 
 pitch_list = list(pitch_df['pitchtype'].value_counts().index)
 marker_colors = dict(zip(pitch_list,
@@ -115,6 +114,43 @@ def pitch_scatters(card_player, selected_date):
     sns.move_legend(ax, "lower center", bbox_to_anchor=(0.5, -.5), ncol=len(amovement), fontsize=10)
     sns.despine(fig)
     st.pyplot(fig)
+
+    # Returns Total Pitches
+    start_total = pitches_scatter.loc[:, ['pitch_id', 'name']].groupby('name', as_index=False).count()
+    start_total = start_total.rename(columns={'pitch_id': 'Total'})
+
+    # Returns Pitch Type Pitches
+    start_counts = (pitches_scatter.loc[:, ['pitch_id', 'pitchtype', 'name']]
+                    .groupby(['pitchtype', 'name'], as_index=False).count())
+
+    # Returns Stats by Pitch
+    start_sums = (pitches_scatter.loc[:, ['pitchtype', 'name', 'whiff', 'called_strike', 'in_zone',
+                                          'contact', 'chase_swing']]
+                    .groupby(['pitchtype', 'name'], as_index=False).sum())
+
+    # Merges DataFrames
+    start_counts = start_total.merge(start_counts)
+    start_counts = start_counts.merge(start_sums)
+    start_counts = start_counts.drop(columns=['name'])
+
+    start_counts['Usage%'] = round((start_counts['pitch_id'] / start_counts['Total'] * 100), 2)
+    start_counts['CSW%'] = round(((start_counts['whiff'] + start_counts['called_strike']) / start_counts['pitch_id']) * 100, 2)
+    start_counts['Zone%'] = round((start_counts['in_zone'] / start_counts['pitch_id']) * 100, 2)
+
+    # Returns Average Pitch Specs
+    start_avgs = (pitches_scatter.loc[:, ['velo', 'pitchtype', 'vertical_movement', 'horizontal_movement']]
+                  .groupby('pitchtype', as_index=False).mean())
+    start_avgs['velo'] = round(start_avgs['velo'], 2)
+    start_avgs['horizontal_movement'] = round(start_avgs['horizontal_movement'], 2)
+    start_avgs['vertical_movement'] = round(start_avgs['vertical_movement'], 2)
+
+    start_stats = start_counts.merge(start_avgs, on='pitchtype')
+    start_stats = start_stats.rename(columns={'pitchtype': 'Pitch Type', 'pitch_id': '#', 'whiff': 'Whiffs',
+                                              'called_strike': 'CS', 'velo': 'MPH', 'vertical_movement': 'VMov',
+                                              'horizontal_movement': 'HMov', 'contact': 'In Play', 'chase_swing': 'Chases'})
+    start_stats = start_stats.drop(columns=['in_zone', 'Total'])
+    st.dataframe(data=start_stats, width=1200, column_order=('Pitch Type', '#', 'Usage%', 'MPH', 'CS', 'Whiffs', 'CSW%', 'Chases',
+                 'In Play', 'Zone%', 'VMov', 'HMov'), hide_index=True)
 
 
 pitch_scatters(card_player, selected_date)

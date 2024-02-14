@@ -149,7 +149,7 @@ def pitch_scatters(card_player, selected_date):
                                               'called_strike': 'CS', 'velo': 'MPH', 'vertical_movement': 'VMov',
                                               'horizontal_movement': 'HMov', 'contact': 'In Play', 'chase_swing': 'Chases'})
     start_stats = start_stats.drop(columns=['in_zone', 'Total'])
-    st.dataframe(data=start_stats, width=1200, column_order=('Pitch Type', '#', 'Usage%', 'MPH', 'CS', 'Whiffs', 'CSW%', 'Chases',
+    st.dataframe(data=start_stats, column_order=('Pitch Type', '#', 'Usage%', 'MPH', 'CS', 'Whiffs', 'CSW%', 'Chases',
                  'In Play', 'Zone%', 'VMov', 'HMov'), hide_index=True)
 
 

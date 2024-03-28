@@ -97,7 +97,7 @@ def pitch_scatters(card_player, selected_date):
     ax1.plot([8.28 / 12, 0], [plate_y + 0.15, plate_y + 0.25], color='k', linewidth=2)
     ax1.plot([-8.28 / 12, 0], [plate_y + 0.15, plate_y + 0.25], color='k', linewidth=2)
 
-    ax1.set(xlim=(-x_ft, x_ft),
+    ax1.set(xlim=(x_ft, -x_ft),
             ylim=(y_bot, y_lim),
             aspect=1)
 

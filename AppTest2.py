@@ -56,7 +56,7 @@ pitch_palette = {'FF': 'red', 'FS': 'teal', 'KC': 'c', 'FC': 'brown',
                  'ST': 'y', 'SL': 'gold', 'CH': 'forestgreen', 'SI': 'darkorange',
                  'CU': 'c', 'PO': 'lightgrey', 'KN': 'b', 'FA': 'white',
                  'EP': 'black'}
-@st.cache_data
+
 def pitch_scatters(card_player, selected_date):
     sns.set_theme(style='darkgrid')
 
@@ -119,15 +119,20 @@ def pitch_scatters(card_player, selected_date):
     amovement = (amovement.loc[:, ['pfx_z', 'pfx_x', 'player_name', 'pitch_type']].
                  groupby(['player_name', 'pitch_type']).mean())
 
+
     # Plot Season Average Movements
-    sns.scatterplot(data=amovement, ax=ax, x='pfx_x', y='pfx_z',
+    try:
+        sns.scatterplot(data=amovement, ax=ax, x='pfx_x', y='pfx_z',
                     hue='pitch_type', legend=False, s=150, palette=pitch_palette, marker='*')
-    ax.set_title(str(card_player)+' Pitch Movements on\n'+str(selected_date)+' vs. '+str(compare))
-    ax.legend(title='Pitch Breaks '+str(selected_date)+' vs. '+ str(compare)+'*')
-    ax.set_xlabel('Horizontal Movement')
-    ax.set_ylabel('Vertical Movement')
-    sns.move_legend(ax, "lower center", bbox_to_anchor=(0.5, -.6), ncol=(len(amovement)/2)+1, fontsize=8)
-    sns.despine(fig)
+        ax.set_title(str(card_player)+' Pitch Movements on\n'+str(selected_date)+' vs. '+str(compare))
+        ax.legend(title='Pitch Breaks '+str(selected_date)+' vs. '+ str(compare)+'*')
+        ax.set_xlabel('Horizontal Movement')
+        ax.set_ylabel('Vertical Movement')
+        sns.move_legend(ax, "lower center", bbox_to_anchor=(0.5, -.6), ncol=(len(amovement)/2)+1, fontsize=8)
+        sns.despine(fig)
+    except:
+        errormessage = ('Not enough pitches in '+compare+' for comparison. Please choose another year to see average movements.')
+        st.error(errormessage, icon='🚨')
 
     st.pyplot(fig)
 

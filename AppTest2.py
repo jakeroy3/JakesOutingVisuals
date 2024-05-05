@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 
+
 st.title("Jake's Outing Visualizer")
 col1, col2 = st.columns(2)
 
@@ -55,7 +56,7 @@ pitch_palette = {'FF': 'red', 'FS': 'teal', 'KC': 'c', 'FC': 'brown',
                  'ST': 'y', 'SL': 'gold', 'CH': 'forestgreen', 'SI': 'darkorange',
                  'CU': 'c', 'PO': 'lightgrey', 'KN': 'b', 'FA': 'white',
                  'EP': 'black'}
-
+@st.cache_data
 def pitch_scatters(card_player, selected_date):
     sns.set_theme(style='darkgrid')
 
